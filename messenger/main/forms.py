@@ -15,3 +15,9 @@ class CreateUser (FlaskForm):
     email = StringField('Email', validators=[data_required(), Email()])
     password = PasswordField('Password', validators=[data_required()])
     submit = SubmitField('Create')
+
+
+class CreateMessage(FlaskForm):
+    content = TextAreaField ('Content of Message')
+    reciver_email = StringField('Reciver Email', validators=[data_required()])
+    submit = SubmitField('Send') 
