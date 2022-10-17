@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block content %}
+<form method="POST" action="">
+    {{ form.hidden_tag() }}
+    <fieldset>
+      <div>
+        {{ form.email.label }} 
+        {% if form.email.errors %}
+          {{form.email}}
+          <div>
+          {% for erorr in form.email.errors %}
+            <span>{{erorr}}</span>
+          {% endfor %}
+          </div>
+        {% else %}
+          {{form.email }}
+        {% endif %}
+      </div>
+      <div>
+        {{ form.password.label }}
+        {% if form.password.errors %}
+          {{form.password}}
+          <div>
+          {% for erorr in form.password.errors %}
+            <span>{{erorr}}</span>
+          {% endfor %}
+          </div>
+        {% else %}
+          {{form.password }} 
+        {% endif %}
+      </div>
+    </fieldset>
+    <div>{{ form.submit }}</div>
+  </form>
+  <a href="{{ url_for('main.register_account')}}">Create User</a>
+{% endblock content %}
