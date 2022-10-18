@@ -1,5 +1,11 @@
-from messenger import db, app
+from messenger import db, app, login_manager
 from flask_login import UserMixin
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
 
 class User(db.Model, UserMixin):
     id = db.Column (db.Integer, primary_key = True)
@@ -18,19 +24,19 @@ class User(db.Model, UserMixin):
 class MessagesSent(db.Model):
     id = db.Column (db.Integer, primary_key = True)
     content = db.Column (db.Text, nullable = False)
-    author_id = db.Column (db.Integer, db.ForeignKey('user.id'))
+    author_email = db.Column (db.Integer, db.ForeignKey('user.email'))
   
 
     def __repr__(self) -> str:
-        return f"Messages sended id: {self.id} Content: {self.content} Author: {self.author_id.email}"
+        return f"Messages sended id: {self.id} Content: {self.content} Author: {self.author_email}"
 
 
 class MessagesRecive(db.Model):
     id = db.Column (db.Integer, primary_key = True)
     content = db.Column (db.Text, nullable = False)
-    reciver_id = db.Column (db.Integer, db.ForeignKey('user.id'))
+    reciver_email = db.Column (db.Integer, db.ForeignKey('user.email'))
     
 
     def __repr__(self) -> str:
-        return f"Messages incoming id: {self.id} Content: {self.content} Reciver: {self.reciver_id.email}"
+        return f"Messages incoming id: {self.id} Content: {self.content} Reciver: {self.reciver_email}"
 

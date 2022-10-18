@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, PasswordField, SubmitField
 from wtforms.validators import data_required, Length, Email, EqualTo, ValidationError
+from messenger.models import User
 
 
 class LoginForm (FlaskForm):
@@ -17,7 +18,18 @@ class CreateUser (FlaskForm):
     submit = SubmitField('Create')
 
 
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError('Email already in db chose another one')
+
+
 class CreateMessage(FlaskForm):
     content = TextAreaField ('Content of Message')
     reciver_email = StringField('Reciver Email', validators=[data_required()])
+    submit = SubmitField('Send') 
+
+
+class ReplyMessage(FlaskForm):
+    content = TextAreaField ('Content of Message')
     submit = SubmitField('Send') 

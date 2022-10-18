@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div>
+        <span>
+            Welcome {{user.first_name}} {{user.last_name}}
+        </span>
+        <div>
+            Here are yours send messages:
+            <div>
+                {% if send_messages %}
+                    {% for msg in send_messages %}
+                    <span>{{ msg.author_email }}:</span>
+                    <span>{{ msg.content }}</span>
+                    {% endfor %}
+                    <br>
+                {% endif %}
+                <a href="{{url_for('main.create_new_message')}}">Create new message</a>
+            </div>
+        </div>
+        <div>
+            Here are yours recived messages:
+            <div>
+                {% for email in sender %}
+                    {% for msg in recived_messages %}
+                    <span>{{ email }}:</span>
+                    <span>{{ msg.content }}</span>
+                    <a href="{{url_for('main.reply', msg_recived_id = msg.id)}}">Replay</a>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+        <a href="{{url_for('main.logout')}}">Log out</a>
+    </div>
+{% endblock content %}

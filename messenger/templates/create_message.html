@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block content %}
+<form method="POST" action="">
+    {{ form.hidden_tag() }}
+    <fieldset>
+      <div>
+        {{ form.content.label }} 
+        {% if form.content.errors %}
+          {{form.content}}
+          <div>
+          {% for erorr in form.content.errors %}
+            <span>{{erorr}}</span>
+          {% endfor %}
+          </div>
+        {% else %}
+          {{form.content }}
+        {% endif %}
+      </div>
+      <div>
+        {{ form.reciver_email.label }} 
+        {% if form.reciver_email.errors %}
+          {{form.reciver_email}}
+          <div>
+          {% for erorr in form.reciver_email.errors %}
+            <span>{{erorr}}</span>
+          {% endfor %}
+          </div>
+        {% else %}
+          {{form.reciver_email }}
+        {% endif %}
+      </div>
+    </fieldset>
+    <div>{{ form.submit }}</div>
+  </form>
+  <a href="{{url_for('main.messanger')}}">Get back to Messanger</a>
+{% endblock content %}
