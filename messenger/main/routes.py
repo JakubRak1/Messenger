@@ -1,8 +1,9 @@
+import json
 from flask import render_template, Blueprint, redirect, flash, url_for
 from flask_login import login_user, login_required, current_user, logout_user
-from messenger import db, app
+from messenger import db
 from messenger.main.forms import LoginForm, CreateUser, CreateMessage, ReplyMessage
-from messenger.models import User, MessagesSent, MessagesRecive
+from messenger.models import People, MessagesSent, MessagesRecive
 
 main = Blueprint('main', __name__)
 
@@ -12,7 +13,7 @@ main = Blueprint('main', __name__)
 def home():
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = db.session.query(People).filter_by(email=form.email.data).first()
         if(user and user.password == form.password.data):
             login_user(user)
             return redirect(url_for('main.messanger'))
@@ -24,17 +25,23 @@ def home():
 @main.route('/register', methods=["GET","POST"])
 def register_account():
     form = CreateUser()
+    if form.validate_on_submit():
+        user = People(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, password=form.password.data, message_created=[], message_recived=[])
+        db.session.add(user)
+        db.session.commit()
+        flash(f"Created Account")
+        return redirect(url_for('main.home'))
     return render_template('register.html', form = form)
 
 
 @main.route('/messenger', methods=["GET","POST"])
 @login_required
 def messanger():
-    send_messages = MessagesSent.query.filter_by(author_email = current_user.email).all()
-    recived_messages = MessagesRecive.query.filter_by(reciver_email = current_user.email).all()
+    send_messages = db.session.query(MessagesSent).filter_by(author_email = current_user.email).all()
+    recived_messages = db.session.query(MessagesRecive).filter_by(reciver_email = current_user.email).all()
     email_recived = []
     for i in range(len(recived_messages)):
-        email_to_reply = MessagesSent.query.filter_by(content = recived_messages[i].content).first()
+        email_to_reply = db.session.query(MessagesSent).filter_by(content = recived_messages[i].content).first()
         email_recived.append(email_to_reply.author_email) 
     return render_template('messanger.html', send_messages = send_messages, recived_messages = recived_messages, user = current_user, sender = email_recived)
 
@@ -51,7 +58,7 @@ def logout():
 def create_new_message():
     form = CreateMessage()
     if form.validate_on_submit():
-        reciver = User.query.filter_by(email=form.reciver_email.data).first()
+        reciver = db.session.query(People).filter_by(email=form.reciver_email.data).first()
         if(reciver):
             new_message_sent = MessagesSent(content = form.content.data, author_email = current_user.email)
             new_message_recived = MessagesRecive(content = form.content.data, reciver_email = reciver.email)
@@ -67,9 +74,9 @@ def create_new_message():
 @login_required
 def reply(msg_recived_id):
     form = ReplyMessage()
-    msg_recived = MessagesRecive.query.filter_by(id = msg_recived_id).first()
-    msg_sended = MessagesSent.query.filter_by(content=msg_recived.content).first()
-    reciver = User.query.filter_by(email=msg_sended.author_email).first()
+    msg_recived = db.session.query(MessagesRecive).filter_by(id = msg_recived_id).first()
+    msg_sended = db.session.query(MessagesSent).filter_by(content=msg_recived.content).first()
+    reciver = db.session.query(People).filter_by(email=msg_sended.author_email).first()
     if form.validate_on_submit():
         new_message_sent = MessagesSent(content = form.content.data, author_email = current_user.email)
         new_message_recived = MessagesRecive(content = form.content.data, reciver_email = reciver.email)

@@ -1,2 +1,0 @@
-# Rozproszone
-rozproszone
