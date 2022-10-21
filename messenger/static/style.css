@@ -1,0 +1,224 @@
+:root {
+    --background-darker: #152340;
+    --background-darker-highlight: #1c2d4e;
+    --background-dark: #405b73;
+    --text: #dadada;
+    --front-darker: #3b8dbf;
+    --front-lighter: #34a6bf;
+    /* New colors */
+    --background-black-brighter: #2c2f33;
+    --background-blue-brighter: #6374c2;
+    --background-blue: #4a5fc1;
+    --background-darker-blue: #152340;
+    --background-black: #23272a;
+    --background-grey: #616e7c;
+    --error: red;
+  }
+  body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    background-color: var(
+      --background-blue
+    );
+    color: var(--text);
+    font-family: "ABC Ginto Normal",
+      "Helvetica Neue", Helvetica, Arial,
+      sans-serif;
+  }
+
+  form {
+    background-color: var(
+      --background-black-brighter
+    );
+    position: relative;
+    width: 40vw;
+    height: fit-content;
+    border: 5px solid
+      var(--background-black-brighter);
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    text-align: center;
+    padding: 5% 5% 0 5%;
+    margin-top: 5%;
+    margin-block-end: 0;
+  }
+  fieldset {
+    margin-inline-start: 0;
+    padding: 0;
+    border: 0;
+  }
+  .no-border{
+    border: 0;
+  }
+  div {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.25vw;
+  }
+  
+  label {
+    text-align: center;
+    margin-top: 3%;
+    margin-bottom: 3%;
+  }
+  
+  .invalid-feedback {
+    color: var(--error);
+    margin-top: 1%;
+    font-size: 1vw;
+    font-weight: bolder;
+    text-align: start;
+  }
+  
+  input {
+    padding: 0.5vw;
+    width: 100%;
+    font-size: 1vw;
+    color: var(--text);
+    background-color: var(
+      --background-black
+    );
+    border: 0;
+    border-radius: 4%;
+  }
+  input:focus {
+    outline: none;
+    background-color: var(--text);
+    color: var(--background-black);
+    font-weight: bold;
+  }
+  
+  input[value="Log In"] {
+    background-color: var(
+      --background-blue
+    );
+    width: 102%;
+    padding-right: 5%;
+    text-align: center;
+    font-size: 1.25vw;
+    font-weight: bold;
+    margin-top: 4%;
+    margin-bottom: 2.5%;
+    cursor: pointer;
+  }
+  input[value="Log In"]:hover {
+    background-color: var(
+      --background-blue-brighter
+    );
+    border-radius: 5px;
+  }
+  small {
+    font-size: 1vw;
+  }
+  a{
+    text-align: center;
+    font-size: 1.25vw;
+    color: var(--text);
+    text-decoration: none;
+    background-color: var(--background-black-brighter);
+    border: 5px solid var(--background-black-brighter);
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding-left: 5%;
+    padding-right: 5%;
+    width: 40vw;
+  }
+  .alarm{
+    position: relative;
+    margin-top: 5vw;
+    color: var(--error);
+  }
+  input[value="Create"] {
+    background-color: var(
+      --background-blue
+    );
+    width: 102%;
+    padding-right: 5%;
+    text-align: center;
+    font-size: 1.25vw;
+    font-weight: bold;
+    margin-top: 4%;
+    margin-bottom: 2.5%;
+    cursor: pointer;
+  }
+  input[value="Create"]:hover {
+    background-color: var(
+      --background-blue-brighter
+    );
+    border-radius: 5px;
+  }
+  .messenger-app{
+    background-color: var(--background-black-brighter);
+    width: 50vw;
+    padding: 5vw;
+    border-radius: 10px;
+  }
+  .messenger-ref{
+  border:0;
+  margin-left: 15vw;
+  width: 15vw;
+  border-left: 5px solid var(--background-blue-brighter);
+  border-right: 5px solid var(--background-blue-brighter);
+  border-top: 2px solid var(--background-blue-brighter);
+  border-bottom: 2px solid var(--background-blue-brighter);
+  border-top-left-radius: 10px;
+  margin-top: 1vw;
+  margin-bottom: 1vw;
+  background-color: var(--background-blue-brighter);
+ }
+ ol{
+  padding-left: 5px;
+ }
+ .welcome{
+  text-align: center;
+  font-size: 2vw;
+  margin-bottom: 3vw;
+ }
+ .sent-text, .recived-text{
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 15px;
+ }
+ .message-replay{
+  border:0;
+  margin-left: 2vw;
+  border-left: 2.5px solid var(--background-blue-brighter);
+  border-right: 2.5px solid var(--background-blue-brighter);
+  border-top: 2px solid var(--background-blue-brighter);
+  border-bottom: 2px solid var(--background-blue-brighter);
+  margin-bottom: 1vw;
+  background-color: var(--background-blue-brighter);
+  border-top-right-radius: 10px;
+ }
+ input[value="Send"] {
+  background-color: var(
+    --background-blue
+  );
+  width: 102%;
+  padding-right: 5%;
+  text-align: center;
+  font-size: 1.25vw;
+  font-weight: bold;
+  margin-top: 4%;
+  margin-bottom: 2.5%;
+  cursor: pointer;
+}
+input[value="Send"]:hover {
+  background-color: var(
+    --background-blue-brighter
+  );
+  border-radius: 5px;
+}
+textarea{
+  width: 100%;
+  background-color: var(--background-black);
+  border: 0;
+  border-radius: 4%;
+  color: var(--text);
+  font-size: 1vw;
+  padding: 0.5vw;
+  resize: none;
+  outline: 0;
+}

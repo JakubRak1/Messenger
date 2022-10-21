@@ -1,34 +1,46 @@
 {% extends "layout.html" %}
 {% block content %}
-    <div>
-        <span>
+    <div class="messenger-app">
+        <span class="welcome">
             Welcome {{user.first_name}} {{user.last_name}}
         </span>
-        <div>
-            Here are yours send messages:
+        <div class="container-message">
+            <span class="sent-text">
+                Sent messages:
+            </span>
             <div>
+                <ol>
                 {% if send_messages %}
                     {% for msg in send_messages %}
-                    <span>{{ msg.author_email }}:</span>
-                    <span>{{ msg.content }}</span>
+                    <li>
+                        <span>Sent from: {{ msg.author_email }}:</span><br>
+                        <span>Content: {{ msg.content }}</span>        
+                    </li>
                     {% endfor %}
                     <br>
                 {% endif %}
-                <a href="{{url_for('main.create_new_message')}}">Create new message</a>
+                </ol>
+                <a class = "messenger-ref" href="{{url_for('main.create_new_message')}}">Create new message</a>
             </div>
         </div>
-        <div>
-            Here are yours recived messages:
+        <div class="container-message">
+            <span class="recived-text">
+                Recived messages:
+            </span>
             <div>
+                <ol>
                 {% for email in sender %}
                     {% for msg in recived_messages %}
-                    <span>{{ email }}:</span>
-                    <span>{{ msg.content }}</span>
-                    <a href="{{url_for('main.reply', msg_recived_id = msg.id)}}">Replay</a>
+                    <li>
+                        <span>Recived from: {{ email }}:</span><br>
+                        <span>Content: {{ msg.content }}</span>
+                    </li><br>
+                    <a class = "message-replay" href="{{url_for('main.reply', msg_recived_id = msg.id)}}">Replay</a>
                     {% endfor %}
                 {% endfor %}
+                </ol>
             </div>
         </div>
-        <a href="{{url_for('main.logout')}}">Log out</a>
+        <a class = "messenger-ref" href="{{url_for('main.logout')}}">Log out</a>
     </div>
 {% endblock content %}

@@ -2,7 +2,7 @@
 {% block content %}
 <form method="POST" action="">
     {{ form.hidden_tag() }}
-    <fieldset>
+    <fieldset class="no-border">
       <div>
         {{ form.email.label }} 
         {% if form.email.errors %}
