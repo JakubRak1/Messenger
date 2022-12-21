@@ -3,7 +3,8 @@
     <div class="messenger-app">
         <span class="welcome">
             Welcome {{user.first_name}} {{user.last_name}}
-        </span>
+        </span><br>
+        <span class="welcome">{{user.email}}</span>
         <div class="container-message">
             <span class="sent-text">
                 Sent messages:
@@ -13,9 +14,14 @@
                 {% if send_messages %}
                     {% for msg in send_messages %}
                     <li>
-                        <span>Sent from: {{ msg.author_email }}:</span><br>
-                        <span>Content: {{ msg.content }}</span>        
-                    </li>
+                        <div class="msg-container">
+                            <div class="title-content">
+                                <span class="bold">Content: </span>
+                                <textarea> {{ msg.content }}</textarea>
+                            </div>
+                            <a class = "message-delete-right" href="{{url_for('main.delete_send', msg_send_id = msg.id)}}">Delete</a>
+                        </div>        
+                    </li><br>
                     {% endfor %}
                     <br>
                 {% endif %}
@@ -32,10 +38,20 @@
                 {% for email in sender %}
                     {% for msg in recived_messages %}
                     <li>
-                        <span>Recived from: {{ email }}:</span><br>
-                        <span>Content: {{ msg.content }}</span>
-                    </li><br>
-                    <a class = "message-replay" href="{{url_for('main.reply', msg_recived_id = msg.id)}}">Replay</a>
+                        <div class="msg-container">
+                            <div class="title-content">
+                                <span class="bold">Recived from</span>
+                                <span> {{ email }}:</span>
+                            </div>
+                            <div class="title-content">
+                                <span class="bold">Content:</span>
+                                <textarea> {{ msg.content }}</textarea>
+                            </div>
+                    </li>
+                    <div class="title-content align-gap">
+                        <a class = "message-replay" href="{{url_for('main.reply', msg_recived_id = msg.id)}}">Replay</a>
+                        <a class = "message-delete-left" href="{{url_for('main.delete_recived', msg_recived_id = msg.id)}}">Delete</a>
+                    </div>
                     {% endfor %}
                 {% endfor %}
                 </ol>

@@ -168,6 +168,18 @@
   margin-bottom: 1vw;
   background-color: var(--background-blue-brighter);
  }
+ .msg-container{
+  display: flex;
+  flex-direction: column;
+  column-gap: 2vw;
+ }
+ .title-content{
+  display: flex;
+  flex-direction: row;
+ }
+ textarea{
+  height: 12vw;
+ }
  ol{
   padding-left: 5px;
  }
@@ -183,14 +195,40 @@
  }
  .message-replay{
   border:0;
-  margin-left: 2vw;
   border-left: 2.5px solid var(--background-blue-brighter);
   border-right: 2.5px solid var(--background-blue-brighter);
   border-top: 2px solid var(--background-blue-brighter);
   border-bottom: 2px solid var(--background-blue-brighter);
   margin-bottom: 1vw;
+  margin-top: 1vw;
   background-color: var(--background-blue-brighter);
   border-top-right-radius: 10px;
+  width: 5vw;
+ }
+ .message-delete-left{
+  border:0;
+  border-left: 2.5px solid var(--error);
+  border-right: 2.5px solid var(--error);
+  border-top: 2px solid var(--error);
+  border-bottom: 2px solid var(--error);
+  margin-bottom: 1vw;
+  margin-top: 1vw;
+  background-color: var(--error);
+  border-top-left-radius: 10px;
+  width: 5vw;
+ }
+ .message-delete-right{
+  border:0;
+  border-left: 2.5px solid var(--error);
+  border-right: 2.5px solid var(--error);
+  border-top: 2px solid var(--error);
+  border-bottom: 2px solid var(--error);
+  margin-bottom: 1vw;
+  margin-top: 1vw;
+  background-color: var(--error);
+  border-top-right-radius: 10px;
+  width: 5vw;
+  margin-left: 20vw;
  }
  input[value="Send"] {
   background-color: var(
@@ -221,4 +259,12 @@ textarea{
   padding: 0.5vw;
   resize: none;
   outline: 0;
+}
+.bold{
+  font-weight: bold;
+  margin-right: 0.5vw;
+}
+.align-gap{
+  column-gap: 2vw;
+  justify-content: center;
 }

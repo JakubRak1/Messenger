@@ -84,3 +84,21 @@ def reply(msg_recived_id):
         db.session.commit()
         return redirect(url_for('main.messanger'))
     return render_template('reply.html', form=form)
+
+
+@main.route('/messenger/delete_recive_<int:msg_recived_id>', methods=["GET", "POST"])
+@login_required
+def delete_recived(msg_recived_id):
+    msg_deleted = db.session.query(MessagesRecive).filter_by(id=msg_recived_id).first()
+    db.session.delete(msg_deleted)
+    db.session.commit()
+    return redirect(url_for('main.messanger'))
+
+
+@main.route('/messenger/delete_send_<int:msg_send_id>', methods=["GET", "POST"])
+@login_required
+def delete_send(msg_send_id):
+    msg_send_deleted = db.session.query(MessagesSent).filter_by(id=msg_send_id, author_email=current_user.email).first()
+    db.session.delete(msg_send_deleted)
+    db.session.commit()
+    return redirect(url_for('main.messanger'))
