@@ -3,7 +3,7 @@ from flask import render_template, Blueprint, redirect, flash, url_for
 from flask_login import login_user, login_required, current_user, logout_user
 from messenger import db
 from messenger.main.forms import LoginForm, CreateUser, CreateMessage, ReplyMessage
-from messenger.models import People, MessagesSent, MessagesRecive
+from messenger.models import People, MessagesSent, MessagesRecive, MessagesSentDisplay
 
 main = Blueprint('main', __name__)
 
@@ -26,7 +26,7 @@ def home():
 def register_account():
     form = CreateUser()
     if form.validate_on_submit():
-        user = People(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, password=form.password.data, message_created=[], message_recived=[])
+        user = People(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, password=form.password.data, message_created=[], message_recived=[], message_send_display=[])
         db.session.add(user)
         db.session.commit()
         flash(f"Created Account")
@@ -37,13 +37,18 @@ def register_account():
 @main.route('/messenger', methods=["GET","POST"])
 @login_required
 def messanger():
-    send_messages = db.session.query(MessagesSent).filter_by(author_email = current_user.email).all()
+    send_messages_display = db.session.query(MessagesSentDisplay).filter_by(author_email = current_user.email).all()
     recived_messages = db.session.query(MessagesRecive).filter_by(reciver_email = current_user.email).all()
     email_recived = []
     for i in range(len(recived_messages)):
         email_to_reply = db.session.query(MessagesSent).filter_by(content = recived_messages[i].content).first()
-        email_recived.append(email_to_reply.author_email) 
-    return render_template('messanger.html', send_messages = send_messages, recived_messages = recived_messages, user = current_user, sender = email_recived)
+        email_recived.append(email_to_reply.author_email)
+    email_recived_set = set(email_recived)
+    email_recived_dict = {}
+    for adress in email_recived_set:
+        emails = db.session.query(MessagesSent).filter_by(author_email = adress).all()
+        email_recived_dict[adress] = emails
+    return render_template('messanger.html', send_messages = send_messages_display, recived_messages = email_recived_dict, user = current_user)
 
 
 @main.route('/messenger/logout', methods=["GET","POST"])
@@ -61,8 +66,9 @@ def create_new_message():
         reciver = db.session.query(People).filter_by(email=form.reciver_email.data).first()
         if(reciver):
             new_message_sent = MessagesSent(content = form.content.data, author_email = current_user.email)
+            new_message_sent_display = MessagesSentDisplay(content = form.content.data, author_email= current_user.email, reciver_email=reciver.email)
             new_message_recived = MessagesRecive(content = form.content.data, reciver_email = reciver.email)
-            db.session.add_all([new_message_sent, new_message_recived])
+            db.session.add_all([new_message_sent, new_message_sent_display, new_message_recived])
             db.session.commit()
             return redirect(url_for('main.messanger'))
         else:
@@ -79,8 +85,9 @@ def reply(msg_recived_id):
     reciver = db.session.query(People).filter_by(email=msg_sended.author_email).first()
     if form.validate_on_submit():
         new_message_sent = MessagesSent(content = form.content.data, author_email = current_user.email)
+        new_message_sent_display = MessagesSentDisplay(content = form.content.data, author_email= current_user.email, reciver_email=reciver.email)
         new_message_recived = MessagesRecive(content = form.content.data, reciver_email = reciver.email)
-        db.session.add_all([new_message_sent, new_message_recived])
+        db.session.add_all([new_message_sent, new_message_sent_display, new_message_recived])
         db.session.commit()
         return redirect(url_for('main.messanger'))
     return render_template('reply.html', form=form)
@@ -98,7 +105,7 @@ def delete_recived(msg_recived_id):
 @main.route('/messenger/delete_send_<int:msg_send_id>', methods=["GET", "POST"])
 @login_required
 def delete_send(msg_send_id):
-    msg_send_deleted = db.session.query(MessagesSent).filter_by(id=msg_send_id, author_email=current_user.email).first()
-    db.session.delete(msg_send_deleted)
+    msg_send_display_deleted = db.session.query(MessagesSentDisplay).filter_by(id=msg_send_id, author_email=current_user.email).first()
+    db.session.delete(msg_send_display_deleted)
     db.session.commit()
     return redirect(url_for('main.messanger'))

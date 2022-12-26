@@ -15,9 +15,13 @@
                     {% for msg in send_messages %}
                     <li>
                         <div class="msg-container">
-                            <div class="title-content">
+                            <div class="title-content mg-bt-1">
+                                <span class="bold">Send to:</span>
+                                <span> {{msg.reciver_email}}</span>
+                            </div>
+                            <div class="title-content mg-bt-1">
                                 <span class="bold">Content: </span>
-                                <textarea> {{ msg.content }}</textarea>
+                                <textarea disabled> {{ msg.content }}</textarea>
                             </div>
                             <a class = "message-delete-right" href="{{url_for('main.delete_send', msg_send_id = msg.id)}}">Delete</a>
                         </div>        
@@ -35,24 +39,42 @@
             </span>
             <div>
                 <ol>
-                {% for email in sender %}
-                    {% for msg in recived_messages %}
-                    <li>
-                        <div class="msg-container">
-                            <div class="title-content">
-                                <span class="bold">Recived from</span>
-                                <span> {{ email }}:</span>
+                {% for key, value in recived_messages.items() %}
+                    {% if value.__class__.__name__ == 'list' %}
+                        {% for msg in value %}
+                            <li>
+                                <div class="msg-container">
+                                    <div class="title-content">
+                                        <span class="bold">Recived from</span>
+                                        <span> {{ key }}:</span>
+                                    </div>
+                                    <div class="title-content">
+                                        <span class="bold">Content:</span>
+                                        <textarea disabled> {{ msg.content }}</textarea>
+                                    </div>
+                            </li>
+                            <div class="title-content align-gap">
+                                <a class = "message-replay" href="{{url_for('main.reply', msg_recived_id = msg.id)}}">Replay</a>
+                                <a class = "message-delete-left" href="{{url_for('main.delete_recived', msg_recived_id = msg.id)}}">Delete</a>
                             </div>
-                            <div class="title-content">
-                                <span class="bold">Content:</span>
-                                <textarea> {{ msg.content }}</textarea>
-                            </div>
-                    </li>
-                    <div class="title-content align-gap">
-                        <a class = "message-replay" href="{{url_for('main.reply', msg_recived_id = msg.id)}}">Replay</a>
-                        <a class = "message-delete-left" href="{{url_for('main.delete_recived', msg_recived_id = msg.id)}}">Delete</a>
-                    </div>
-                    {% endfor %}
+                        {% endfor %}
+                    {% else %}
+                        <li>
+                            <div class="msg-container">
+                                <div class="title-content">
+                                    <span class="bold">Recived from</span>
+                                    <span> {{ key }}:</span>
+                                </div>
+                                <div class="title-content">
+                                    <span class="bold">Content:</span>
+                                    <textarea disabled> {{ value.content }}</textarea>
+                                </div>
+                        </li>
+                        <div class="title-content align-gap">
+                            <a class = "message-replay" href="{{url_for('main.reply', msg_recived_id = value.id)}}">Replay</a>
+                            <a class = "message-delete-left" href="{{url_for('main.delete_recived', msg_recived_id = value.id)}}">Delete</a>
+                        </div>
+                    {% endif %}
                 {% endfor %}
                 </ol>
             </div>
