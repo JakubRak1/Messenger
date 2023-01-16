@@ -3,25 +3,28 @@ version: '3.9'
 
 services:
   pythonapp:
-    container_name: pythonapp
-    image: pythonapp
+    container_name: python
+    image: python
     build: .
     ports:
       - "5000:5000"
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
+      - DATABASE_URL=postgresql://postgres_user:123@db:5432/db
+      - SECRET_KEY=532f7ffa0a70512660d0bc83ad3388c1
     depends_on:
       - db
   
   db:
     container_name: db
     image: postgres:12
+    restart: always
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     environment:
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_USER=postgres_user
+      - POSTGRES_DB=db
+      - PGDATA=/var/lib/postgres/data/pgdata
     volumes:
       - pgdata:/var/lib/postgresql/data
 

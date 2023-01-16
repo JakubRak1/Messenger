@@ -1,11 +1,15 @@
 FROM python:3
 
-COPY requirements.txt .
+LABEL title="Messenger"
 
-RUN pip install -r requirements.txt
+WORKDIR /usr/src/app
+
+COPY requirements.txt ./
+
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-EXPOSE 120
+EXPOSE 5000
 
 CMD ["python", "./run.py"]
