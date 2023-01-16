@@ -13,7 +13,8 @@ ___
 
 ### To run application type on conosle while being inside folder contains app
 ```bash
-    docker compose up -d db
-    docker compose up --build pythonapp -t Messenger-Docker:1.0
+    docker-compose build --no-cache 
+    docker-compose up -d db
+    docker-compose up pythonapp
 ```
 Flask app would be on port: 5000 and postgreSQL on port: 5432
