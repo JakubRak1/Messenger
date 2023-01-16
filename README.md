@@ -17,7 +17,3 @@ ___
     docker compose up --build pythonapp -t Messenger-Docker:1.0
 ```
 Flask app would be on port: 5000 and postgreSQL on port: 5432
-
-
-docker build -t nowanazwa ./
-docker volume create nowanazwa
